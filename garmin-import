@@ -1,0 +1,42 @@
+#!/bin/bash
+# Import activity files from Garmin Edge 500
+
+USAGE="Usage: garmin-import [-u user] -t target"
+
+while getopts ":u:t:" OPTNAME ; do
+	case $OPTNAME in
+		u)
+			USER="$OPTARG"
+			if [ "$UID" != 0 ] ; then
+				echo "Option -u is only for root" >&2
+				exit 1
+			fi
+			;;
+		t)
+			TARGET="$OPTARG"
+			;;
+		\?)
+			echo "Invalid option: -$OPTARG" >&2
+			echo "$USAGE" >&2
+			exit 2
+			;;
+	esac
+done
+
+if [ -z "$TARGET" ] ; then
+	echo "Missing target" >&2
+	echo "$USAGE" >&2
+	exit 3
+fi
+
+if [ -n "$USER" ] ; then
+	 sudo -u $USER bash -c "(
+		sleep 10
+		date
+		whoami
+		echo rsync -rv /media/GARMIN/Garmin/Activities/ \"$TARGET\"
+		rsync -rv /media/GARMIN/Garmin/Activities/ \"$TARGET\"
+	)" &>> /var/log/garmin-import.log &
+else
+	rsync -rv /media/GARMIN/Garmin/Activities/ "$TARGET"
+fi

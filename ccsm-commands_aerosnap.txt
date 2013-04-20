@@ -1,0 +1,52 @@
+## old version (better edges):
+
+WIDTH=`xdpyinfo | grep 'dimensions:' | cut -f 2 -d ':' | cut -f 1 -d 'x'` && HALF=$(($WIDTH/2)) && wmctrl -r :ACTIVE: -b add,maximized_vert && wmctrl -r :ACTIVE: -e 0,0,0,$(($HALF-4)),-1
+
+WIDTH=`xdpyinfo | grep 'dimensions:' | cut -f 2 -d ':' | cut -f 1 -d 'x'` && HALF=$(($WIDTH/2)) && wmctrl -r :ACTIVE: -b add,maximized_vert && wmctrl -r :ACTIVE: -e 0,$(($HALF+4)),0,$(($HALF-4)),-1
+
+wmctrl -r :ACTIVE: -b add,maximized_vert,maximized_horz
+
+
+## original version (http://www.omgubuntu.co.uk/2009/11/aero-snap-ubuntu-linux.html):
+
+WIDTH=`xdpyinfo | grep 'dimensions:' | cut -f 2 -d ':' | cut -f 1 -d 'x'` && HALF=$(($WIDTH/2)) && wmctrl -r :ACTIVE: -b add,maximized_vert && wmctrl -r :ACTIVE: -e 0,0,0,$HALF,-1
+
+WIDTH=`xdpyinfo | grep 'dimensions:' | cut -f 2 -d ':' | cut -f 1 -d 'x'` && HALF=$(($WIDTH/2)) && wmctrl -r :ACTIVE: -b add,maximized_vert && wmctrl -r :ACTIVE: -e 0,$HALF,0,$HALF,-1
+
+wmctrl -r :ACTIVE: -b add,maximized_vert,maximized_horz
+
+
+## maybe better version, from comments on orignal version (dock from maximum):
+
+WIDTH=`xdpyinfo | grep 'dimensions:' | cut -f 2 -d ':' | cut -f 1 -d 'x'` && HALF=$((($WIDTH/2)-10)) && wmctrl -r :ACTIVE: -b remove,maximized_vert,maximized_horz && wmctrl -r :ACTIVE: -b add,maximized_vert && wmctrl -r :ACTIVE: -e 0,0,0,$HALF,-1
+
+WIDTH=`xdpyinfo | grep 'dimensions:' | cut -f 2 -d ':' | cut -f 1 -d 'x'` && HALF=$(($WIDTH/2)) && wmctrl -r :ACTIVE: -b remove,maximized_vert,maximized_horz && wmctrl -r :ACTIVE: -b add,maximized_vert && wmctrl -r :ACTIVE: -e 0,$HALF,0,$HALF,-1
+
+wmctrl -r :ACTIVE: -b remove,maximized_vert,maximized_horz
+
+
+## awk version:
+
+WIDTH=`xdpyinfo | awk '/dimensions/ { split($2,res,/x/); res[1] = res[1]/2; print res[1] } '` && wmctrl -r :ACTIVE: -b remove,maximized_horz && wmctrl -r :ACTIVE: -b add,maximized_vert && wmctrl -r :ACTIVE: -e 0,0,0,$WIDTH,-1
+
+
+## my version:
+
+WIDTH=`xdpyinfo | grep 'dimensions:' | cut -f 2 -d ':' | cut -f 1 -d 'x'` && HALF=$(($WIDTH/2)) && OVERLAP=4 && wmctrl -r :ACTIVE: -b remove,maximized_vert,maximized_horz && wmctrl -r :ACTIVE: -b add,maximized_vert && wmctrl -r :ACTIVE: -e 0,0,0,$(($HALF-$OVERLAP)),-1
+
+WIDTH=`xdpyinfo | grep 'dimensions:' | cut -f 2 -d ':' | cut -f 1 -d 'x'` && HALF=$(($WIDTH/2)) && OVERLAP=4 && wmctrl -r :ACTIVE: -b remove,maximized_vert,maximized_horz && wmctrl -r :ACTIVE: -b add,maximized_vert && wmctrl -r :ACTIVE: -e 0,$(($HALF+$OVERLAP)),0,$(($HALF-$OVERLAP)),-1
+
+wmctrl -r :ACTIVE: -b add,maximized_vert,maximized_horz
+
+wmctrl -r :ACTIVE: -b remove,maximized_vert,maximized_horz
+
+## my awk version (better?)
+
+HALF=`xdpyinfo | awk '/dimensions/ { split($2,res,/x/); res[1] = res[1]/2; print res[1] } '` && wmctrl -r :ACTIVE: -b remove,maximized_vert,maximized_horz && wmctrl -r :ACTIVE: -b add,maximized_vert && wmctrl -r :ACTIVE: -e 0,0,0,$HALF,-1
+
+HALF=`xdpyinfo | awk '/dimensions/ { split($2,res,/x/); res[1] = res[1]/2; print res[1] } '` && wmctrl -r :ACTIVE: -b remove,maximized_vert,maximized_horz && wmctrl -r :ACTIVE: -b add,maximized_vert && wmctrl -r :ACTIVE: -e 0,$HALF,0,$HALF,-1
+
+wmctrl -r :ACTIVE: -b add,maximized_vert,maximized_horz
+
+wmctrl -r :ACTIVE: -b remove,maximized_vert,maximized_horz
+
