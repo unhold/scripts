@@ -1,0 +1,1 @@
+SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", ATTRS{idVendor}=="091e", ATTRS{idProduct}=="240c", ACTION=="add", RUN+="/bin/bash /usr/local/bin/garmin-import -u chris -t /home/chris/Documents/cycling/gps/2012"

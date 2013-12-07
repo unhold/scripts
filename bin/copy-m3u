@@ -1,3 +1,7 @@
+#!/bin/bash
+# $ copy-m3u playlist.m3u
+# hard link all files in a M3U playlist to a new directory playlist.copy_m3u
+
 NAME="${1%.m3u}"
 
 echo "$NAME"

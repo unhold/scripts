@@ -1,0 +1,7 @@
+#!/bin/sh
+HALF=`xdpyinfo | awk '/dimensions/ { split($2,res,/x/); res[1] = res[1]/2; print res[1] } '`
+OFFS=8
+wmctrl -r :ACTIVE: -b remove,maximized_vert,maximized_horz
+wmctrl -r :ACTIVE: -b add,maximized_vert
+wmctrl -r :ACTIVE: -e 0,0,0,$(($HALF-$OFFS)),-1
+

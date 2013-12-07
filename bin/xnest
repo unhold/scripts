@@ -1,0 +1,7 @@
+#!/bin/sh
+# use Xephyr to run command in nested X session
+
+Xephyr -ac -screen 640x480 -br -reset 2> /dev/null :1 &
+DISPLAY=:1
+$1
+

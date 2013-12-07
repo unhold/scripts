@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# $ chend old new
+# recursively change all file endings
+
+find -name "*.$1" | while read oldname
+do
+	newname="${oldname%.$1}.$2"
+	echo "$newname"
+	mv "$oldname" "$newname"
+done
+

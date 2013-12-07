@@ -1,0 +1,27 @@
+#!/bin/bash
+# recursively rename files, replace withespace with underscore
+
+RESULT=0
+
+for NAME in "$@"; do
+	BASENAME=`basename "$NAME"`
+	DIRNAME=`dirname "$NAME"`
+	NEWNAME="${BASENAME// /_}"
+	if [ "$NEWNAME" = "$BASENAME" ]; then
+		echo "skip $NAME" >&2
+		continue
+	fi
+	NEWNAME="${DIRNAME}/${NEWNAME}"
+	echo "svn mv \"$NAME\" $NEWNAME"
+	svn mv "$NAME" "$NEWNAME"
+	if [ $? -ne 0 ]; then
+		RESULT=`expr $RESULT + 1`
+	fi
+done
+
+if [ $RESULT -ne 0 ]; then
+	echo "$RESULT errors" >&2
+fi
+
+exit $RESULT
+

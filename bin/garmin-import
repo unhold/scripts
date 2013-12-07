@@ -1,6 +1,5 @@
 #!/bin/bash
 # Import activity files from Garmin Edge 500
-
 USAGE="Usage: garmin-import [-u user] -t target"
 
 while getopts ":u:t:" OPTNAME ; do
