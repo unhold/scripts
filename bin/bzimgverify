@@ -1,0 +1,12 @@
+#!/bin/bash
+# verify bzip-compressed file against disk image
+
+bzimage="$1"
+disk="$2"
+
+size=$(bzcat "$bzimage" | wc -c)
+if [ -e "$disk" -a ! -r "$disk" ] ; then sudo=sudo ; else sudo= ; fi
+diff <(bzcat "$bzimage") <($sudo dd if="$disk" bs=1M | head -c $size) >/dev/null
+status=$?
+[ $status == 0 ] || echo "bzimgverify failed ($status)"
+exit $status

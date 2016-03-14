@@ -1,5 +1,5 @@
 #!/bin/bash
-# verify bzip-compressed file against disk image
+# verify gzip-compressed file against disk image
 
 zimage="$1"
 disk="$2"
