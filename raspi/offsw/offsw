@@ -1,0 +1,13 @@
+#!/bin/sh
+
+GPIO=3
+SYSP=/sys/class/gpio/gpio$GPIO
+
+[ -d $SYSP ] || echo $GPIO > /sys/class/gpio/export
+[ -d $SYSP ] || exit 1
+
+echo in > $SYSP/direction
+echo 1 > $SYSP/active_low
+echo rising > $SYSP/edge
+
+/usr/local/sbin/poll $SYSP/value && poweroff
